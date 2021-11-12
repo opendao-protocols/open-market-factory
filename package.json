@@ -9,7 +9,8 @@
     "hh": "hardhat run",
     "build": "hardhat clean && hardhat compile",
     "compile": "hardhat compile",
-    "clean": "hardhat clean"
+    "clean": "hardhat clean",
+    "lint:sol": "solium -d contracts/ --fix"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.0",
@@ -26,6 +27,7 @@
     "ethereum-waffle": "^3.0.0",
     "ethers": "^5.0.0",
     "hardhat": "^2.4.3",
+    "solium": "^1.2.5",
     "ts-node": "^10.0.0",
     "typechain": "^5.1.2",
     "typescript": "^4.3.5"
