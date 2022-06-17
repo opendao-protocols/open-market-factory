@@ -27,23 +27,12 @@ contract CTokenStorage {
     /**
      * @notice Maximum borrow rate that can ever be applied (.0005% / block)
      */
-
     uint internal constant borrowRateMaxMantissa = 0.0005e16;
-
-    /**
-     * @notice Maximum fraction of interest that can be set aside for reserves
-     */
-    uint internal constant reserveFactorMaxMantissa = 1e18;
 
     /**
      * @notice Administrator for this contract
      */
     address payable public admin;
-
-    /**
-     * @notice Pending administrator for this contract
-     */
-    address payable public pendingAdmin;
 
     /**
      * @notice Contract which oversees inter-cToken operations
@@ -159,31 +148,6 @@ contract CTokenInterface is CTokenStorage {
     /*** Admin Events ***/
 
     /**
-     * @notice Event emitted when pendingAdmin is changed
-     */
-    event NewPendingAdmin(address oldPendingAdmin, address newPendingAdmin);
-
-    /**
-     * @notice Event emitted when pendingAdmin is accepted, which means admin is updated
-     */
-    event NewAdmin(address oldAdmin, address newAdmin);
-
-    /**
-     * @notice Event emitted when comptroller is changed
-     */
-    event NewComptroller(ComptrollerInterface oldComptroller, ComptrollerInterface newComptroller);
-
-    /**
-     * @notice Event emitted when interestRateModel is changed
-     */
-    event NewMarketInterestRateModel(InterestRateModel oldInterestRateModel, InterestRateModel newInterestRateModel);
-
-    /**
-     * @notice Event emitted when the reserve factor is changed
-     */
-    event NewReserveFactor(uint oldReserveFactorMantissa, uint newReserveFactorMantissa);
-
-    /**
      * @notice Event emitted when the reserves are added
      */
     event ReservesAdded(address benefactor, uint addAmount, uint newTotalReserves);
@@ -232,12 +196,7 @@ contract CTokenInterface is CTokenStorage {
 
     /*** Admin Functions ***/
 
-    function _setPendingAdmin(address payable newPendingAdmin) external returns (uint);
-    function _acceptAdmin() external returns (uint);
-    function _setComptroller(ComptrollerInterface newComptroller) public returns (uint);
-    function _setReserveFactor(uint newReserveFactorMantissa) external returns (uint);
     function _reduceReserves(uint reduceAmount) external returns (uint);
-    function _setInterestRateModel(InterestRateModel newInterestRateModel) public returns (uint);
 }
 
 contract CErc20Storage {
@@ -263,40 +222,4 @@ contract CErc20Interface is CErc20Storage {
     /*** Admin Functions ***/
 
     function _addReserves(uint addAmount) external returns (uint);
-}
-
-contract CDelegationStorage {
-    /**
-     * @notice Implementation address for this contract
-     */
-    address public implementation;
-}
-
-contract CDelegatorInterface is CDelegationStorage {
-    /**
-     * @notice Emitted when implementation is changed
-     */
-    event NewImplementation(address oldImplementation, address newImplementation);
-
-    /**
-     * @notice Called by the admin to update the implementation of the delegator
-     * @param implementation_ The address of the new implementation for delegation
-     * @param allowResign Flag to indicate whether to call _resignImplementation on the old implementation
-     * @param becomeImplementationData The encoded bytes data to be passed to _becomeImplementation
-     */
-    function _setImplementation(address implementation_, bool allowResign, bytes memory becomeImplementationData) public;
-}
-
-contract CDelegateInterface is CDelegationStorage {
-    /**
-     * @notice Called by the delegator on a delegate to initialize it for duty
-     * @dev Should revert if any issues arise which make it unfit for delegation
-     * @param data The encoded bytes data for any initialization
-     */
-    function _becomeImplementation(bytes memory data) public;
-
-    /**
-     * @notice Called by the delegator on a delegate to forfeit its responsibility
-     */
-    function _resignImplementation() public;
 }

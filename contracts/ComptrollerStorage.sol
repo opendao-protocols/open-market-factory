@@ -8,21 +8,6 @@ contract UnitrollerAdminStorage {
     * @notice Administrator for this contract
     */
     address public admin;
-
-    /**
-    * @notice Pending administrator for this contract
-    */
-    address public pendingAdmin;
-
-    /**
-    * @notice Active brains of Unitroller
-    */
-    address public comptrollerImplementation;
-
-    /**
-    * @notice Pending brains of Unitroller
-    */
-    address public pendingComptrollerImplementation;
 }
 
 contract ComptrollerV1Storage is UnitrollerAdminStorage {
@@ -86,8 +71,6 @@ contract ComptrollerV2Storage is ComptrollerV1Storage {
      *  Liquidation / seizing / transfer can only be paused globally, not by market.
      */
     address public pauseGuardian;
-    bool public _mintGuardianPaused;
-    bool public _borrowGuardianPaused;
     bool public transferGuardianPaused;
     bool public seizeGuardianPaused;
     mapping(address => bool) public mintGuardianPaused;
